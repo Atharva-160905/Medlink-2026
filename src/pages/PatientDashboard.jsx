@@ -1,7 +1,8 @@
 import { useState, useEffect } from 'react'
 import { useNavigate } from 'react-router-dom'
 import { supabase } from '../lib/supabase'
-import { FileText, Upload, Plus, LogOut, Search, Trash2, X, ChevronDown, ChevronUp, MessageCircle, Send, Sparkles, Loader2, Brain } from 'lucide-react'
+import { FileText, Upload, Plus, LogOut, Search, Trash2, X, ChevronDown, ChevronUp, MessageCircle, Send, Sparkles, Loader2, Brain, Check, User } from 'lucide-react'
+
 import { extractTextFromUrl } from '../lib/textUtils'
 import { generateMedicalSummary } from '../lib/ai'
 import MedicalChatbot from '../components/MedicalChatbot'
@@ -607,7 +608,8 @@ export default function PatientDashboard() {
                                                 <div>
                                                     <h5 className="font-semibold text-sm text-gray-700 mb-2">Messages:</h5>
                                                     <div className="space-y-2 max-h-48 overflow-y-auto mb-3">
-                                                        {rxMessages[p.id] && rxMessages[p.id].length > 0 ? rxMessages[p.id].map(msg => (
+                                                        {messages[p.id] && messages[p.id].length > 0 ? messages[p.id].map(msg => (
+
                                                             <div key={msg.id} className={`p-2 rounded text-sm ${msg.sender.role === 'patient' ? 'bg-blue-100 text-right' : 'bg-gray-100'}`}>
                                                                 <p className="font-medium text-xs text-gray-600">{msg.sender.full_name}</p>
                                                                 <p>{msg.message_text}</p>
