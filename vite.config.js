@@ -6,10 +6,10 @@ export default defineConfig({
   plugins: [react()],
   server: {
     proxy: {
-      '/api/hf': {
-        target: 'https://router.huggingface.co',
+      '/api/ollama': {
+        target: 'http://localhost:11434',
         changeOrigin: true,
-        rewrite: (path) => path.replace(/^\/api\/hf/, ''),
+        rewrite: (path) => path.replace(/^\/api\/ollama/, ''),
       },
     },
   },

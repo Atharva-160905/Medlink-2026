@@ -1,41 +1,39 @@
-const COHERE_API_KEY = import.meta.env.VITE_COHERE_API_KEY;
-const COHERE_API_URL = "https://api.cohere.ai/v1/chat";
+const OLLAMA_URL = "/api/ollama/api/generate";
+const OLLAMA_MODEL = "llama3.2"; // Detected local model
 
 /**
- * Robust fetch for Cohere API.
+ * Call local Ollama instance.
  */
-async function callCohere(message, temperature = 0.3) {
-    if (!COHERE_API_KEY) {
-        throw new Error("Missing VITE_COHERE_API_KEY");
-    }
-
+async function callOllama(prompt) {
     try {
-        const response = await fetch(COHERE_API_URL, {
+        const response = await fetch(OLLAMA_URL, {
             method: "POST",
             headers: {
-                "Authorization": `Bearer ${COHERE_API_KEY}`,
-                "Content-Type": "application/json",
-                "X-Client-Name": "MedLink-App"
+                "Content-Type": "application/json"
             },
             body: JSON.stringify({
-                message: message,
-                model: "command", // Robust instruction-following model
-                temperature: temperature,
-                chat_history: [], // No history needed for single tasks
-                connectors: [] // No web search
-            }),
+                model: OLLAMA_MODEL,
+                prompt: prompt,
+                stream: false,
+                options: {
+                    temperature: 0.2, // Slight creativity for explanations, but grounded
+                    num_ctx: 8192
+                }
+            })
         });
 
         if (!response.ok) {
-            const errData = await response.json().catch(() => ({}));
-            throw new Error(`Cohere API Error ${response.status}: ${errData.message || JSON.stringify(errData)}`);
+            throw new Error(`Ollama Error: ${response.statusText}`);
         }
 
         const data = await response.json();
-        return data.text || "";
+        return data.response || "";
 
     } catch (e) {
-        console.error("Cohere Call Failed:", e);
+        console.error("Ollama Connection Failed:", e);
+        if (e.message.includes("Failed to fetch") || e.message.includes("NetworkError")) {
+            throw new Error("Local AI is not running. Please start Ollama (run 'ollama serve').");
+        }
         throw e;
     }
 }
@@ -45,48 +43,29 @@ export async function generateMedicalSummary(text) {
         throw new Error("No text available for extraction");
     }
 
-    // Cohere 'command' has good context, but we chunk to be safe and precise.
-    const CHUNK_SIZE = 4000;
-    const chunks = [];
-
-    for (let i = 0; i < text.length; i += CHUNK_SIZE) {
-        chunks.push(text.slice(i, i + CHUNK_SIZE));
-    }
-
-    let finalOutput = "";
-
-    // Strict Extraction Prompt
     const SYSTEM_PREAMBLE = `
-You are a medical data extractor. Your job is to extract factual test results from OCR text.
+You are a helpful medical assistant. Your job is to summarize a medical report for a PATIENT (non-medical person).
 RULES:
-1. Extract ONLY: Patient Name/Age/Sex, Test Names, Values, Units, and Reference Ranges.
-2. Ignore: Addresses, phone numbers, hospital slogans, footers, disclaimers.
-3. Output Format: Bulleted list.
-4. Do NOT generate paragraphs or narratives.
-5. Do NOT add diagnosis or advice.
-6. If the text is garbage or has no medical data, output "No medical data found in this section."
+1. Language: Simple, clear, and reassuring. Avoid complex jargon.
+2. Focus: Explain what the results mean, especially abnormal ones.
+3. SAFETY: DO NOT diagnose, DO NOT prescribe, DO NOT say "You have X disease". Use "This may indicate..." or "Commonly associated with...".
+4. Structure:
+   - **Patient Overview**: Name, Age, Sex (if found), Tests performed.
+   - **Key Findings**: List ONLY abnormal results (High/Low). Format: "Test Name: Value (High/Low) - Simple Explanation".
+   - **What This Means**: A short paragraph explaining the overall picture.
+   - **Next Steps**: Advise consulting a doctor.
+5. Disclaimer: End with "This summary is for informational purposes only and is not a diagnosis. Please consult your doctor."
 `;
 
-    for (let i = 0; i < chunks.length; i++) {
-        console.log(`[Cohere] Processing Chunk ${i + 1}/${chunks.length}...`);
+    const prompt = `${SYSTEM_PREAMBLE}\n\nDOCUMENT TEXT:\n${text}\n\nPATIENT SUMMARY:`;
 
-        const prompt = `${SYSTEM_PREAMBLE}\n\nDOCUMENT TEXT:\n${chunks[i]}\n\nEXTRACTED DATA:`;
-
-        try {
-            // Temp 0 for maximum factuality
-            const result = await callCohere(prompt, 0);
-            finalOutput += result + "\n\n";
-
-            // Respect rate limits (Trial tier is 5 calls/min, Production is higher)
-            // We'll add a small delay.
-            if (i < chunks.length - 1) await new Promise(r => setTimeout(r, 1000));
-
-        } catch (e) {
-            finalOutput += `\n(Error processing part ${i + 1}: ${e.message})\n`;
-        }
+    try {
+        console.log(`[Ollama] Generating summary...`);
+        const result = await callOllama(prompt);
+        return result.trim();
+    } catch (e) {
+        return `Error: ${e.message}`;
     }
-
-    return finalOutput.trim();
 }
 
 export async function explainMedicalTerm(term) {
@@ -98,10 +77,8 @@ Do NOT provide diagnosis or medical advice.
 Just the definition.`;
 
     try {
-        // Temp 0.3 for slightly natural but focused explanation
-        const answer = await callCohere(prompt, 0.3);
-        return answer;
+        return await callOllama(prompt);
     } catch (e) {
-        return "I cannot explain this term right now. Please try again later.";
+        return `Error: ${e.message}`;
     }
 }
