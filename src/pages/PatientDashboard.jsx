@@ -600,7 +600,7 @@ export default function PatientDashboard() {
 
                         {/* Tab Views */}
                         {activeTab === 'documents' && (
-                            <div className="space-y-4 animate-in slide-in-from-bottom-2 duration-500">
+                            <div className="space-y-4 animate-in slide-in-from-bottom-2 duration-500 mt-16">
                                 <div className="flex items-center justify-between mb-2">
                                     <h3 className="font-bold text-slate-800">Uploaded Reports</h3>
                                     {documents.length > 0 && <span className="bg-blue-100 text-blue-700 px-2 py-0.5 rounded-full text-xs font-bold">{documents.length} Records</span>}
@@ -690,7 +690,7 @@ export default function PatientDashboard() {
                         )}
 
                         {activeTab === 'chats' && (
-                            <div className="space-y-4">
+                            <div className="space-y-4 mt-16">
                                 <h3 className="font-bold text-slate-800 mb-2 flex items-center">
                                     <div className="bg-indigo-100 p-2 rounded-lg mr-3 text-indigo-600">
                                         <MessageCircle className="h-5 w-5" />
@@ -761,7 +761,7 @@ export default function PatientDashboard() {
                         )}
 
                         {activeTab === 'doctors' && (
-                            <div className="space-y-6">
+                            <div className="space-y-6 mt-16">
                                 {/* Pending Requests */}
                                 {requests.length > 0 && (
                                     <div className="bg-orange-50/50 border border-orange-100 rounded-2xl p-6">
