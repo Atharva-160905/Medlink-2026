@@ -54,6 +54,7 @@ export default function SignupPage() {
             }
 
         } catch (err) {
+            console.error("Signup Error Details:", err)
             setError(err.message)
         } finally {
             setLoading(false)

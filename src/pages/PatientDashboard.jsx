@@ -25,7 +25,7 @@ export default function PatientDashboard() {
     // UI State
     const [doctorIdInput, setDoctorIdInput] = useState('')
     const [uploading, setUploading] = useState(false)
-    const [activeTab, setActiveTab] = useState('chats') // documents, prescriptions, doctors
+    const [activeTab, setActiveTab] = useState('documents') // documents, chats, doctors
     const [expandedRx, setExpandedRx] = useState(null) // ID of expanded prescription
     const [rxDocs, setRxDocs] = useState({}) // { rxId: [docs] }
     const [chatError, setChatError] = useState(null)
@@ -79,7 +79,7 @@ export default function PatientDashboard() {
             // Join doctor profile to get name
             const { data: rx } = await supabase
                 .from('prescriptions')
-                .select('*, doctor:profiles!doctor_id(full_name)')
+                .select('*, doctor:profiles!doctor_id(full_name, public_id)')
                 .eq('patient_id', userId)
                 .order('created_at', { ascending: false })
             setPrescriptions(rx || [])
@@ -483,9 +483,9 @@ export default function PatientDashboard() {
                         <div className="flex items-center gap-4">
                             <div
                                 onClick={() => navigate('/profile')}
-                                className="text-right hidden sm:block cursor-pointer hover:bg-slate-50 p-2 rounded-lg transition-colors group"
+                                className="text-right cursor-pointer hover:bg-slate-50 p-2 rounded-lg transition-colors group flex flex-col items-end"
                             >
-                                <p className="text-sm font-semibold text-slate-900 group-hover:text-blue-600 transition-colors">{profile?.full_name}</p>
+                                <p className="text-sm font-semibold text-slate-900 group-hover:text-blue-600 transition-colors max-w-[120px] sm:max-w-none truncate">{profile?.full_name}</p>
                                 <p className="text-xs text-slate-500 font-mono">ID: {profile?.public_id}</p>
                             </div>
                             <div className="h-8 w-px bg-slate-200 mx-2 hidden sm:block"></div>
@@ -578,9 +578,9 @@ export default function PatientDashboard() {
                         {/* Tabs */}
                         <div className="bg-white/50 backdrop-blur-sm p-1.5 rounded-xl inline-flex shadow-sm border border-white/60">
                             {[
-                                { id: 'chats', label: 'Chats', icon: MessageCircle },
-                                { id: 'prescriptions', label: 'Medical Records', icon: FileText },
                                 { id: 'documents', label: 'Documents', icon: FileText },
+                                { id: 'chats', label: 'Chats', icon: MessageCircle },
+                                { id: 'doctors', label: 'Doctors', icon: Users },
                             ].map(tab => (
                                 <button
                                     key={tab.id}
@@ -686,13 +686,13 @@ export default function PatientDashboard() {
                             </div>
                         )}
 
-                        {activeTab === 'prescriptions' && (
+                        {activeTab === 'chats' && (
                             <div className="space-y-4">
                                 <h3 className="font-bold text-slate-800 mb-2 flex items-center">
                                     <div className="bg-indigo-100 p-2 rounded-lg mr-3 text-indigo-600">
-                                        <FileText className="h-5 w-5" />
+                                        <MessageCircle className="h-5 w-5" />
                                     </div>
-                                    Detailed Medical History
+                                    My Chats
                                 </h3>
                                 {prescriptions.map(p => (
                                     <div
@@ -701,25 +701,26 @@ export default function PatientDashboard() {
                                             setExpandedRx(p.id)
                                             loadRxDetails(p.id)
                                         }}
-                                        className="bg-white p-5 rounded-2xl shadow-sm border border-slate-100 hover:shadow-md transition-all cursor-pointer group flex items-center justify-between"
+                                        className="bg-white p-5 rounded-2xl shadow-sm border border-slate-100 hover:shadow-md transition-all cursor-pointer group flex flex-col sm:flex-row items-start sm:items-center justify-between gap-4"
                                     >
-                                        <div className="flex items-center gap-4">
+                                        <div className="flex items-center gap-4 w-full sm:w-auto">
                                             <div className="h-12 w-12 bg-indigo-50 rounded-xl flex items-center justify-center text-indigo-600 font-bold group-hover:scale-110 transition-transform">
                                                 Rx
                                             </div>
                                             <div>
                                                 <h4 className="font-bold text-slate-900 text-lg">Dr. {p.doctor?.full_name}</h4>
-                                                <p className="text-xs font-medium text-slate-500 uppercase tracking-wide flex items-center gap-2">
+                                                <p className="text-xs text-slate-500 font-mono">ID: {p.doctor?.public_id}</p>
+                                                <p className="text-xs font-medium text-slate-500 uppercase tracking-wide flex items-center gap-2 mt-1">
                                                     <Clock className="h-3 w-3" />
                                                     {new Date(p.created_at).toLocaleDateString(undefined, { dateStyle: 'full' })}
                                                 </p>
                                             </div>
                                         </div>
 
-                                        <div className="flex items-center gap-4">
-                                            {/* Message Preview (Optional - requires backend support for last message, or we just show 'Tap to chat') */}
-                                            <div className="hidden sm:block text-right">
-                                                <p className="text-xs font-bold text-slate-400 uppercase tracking-wider">Status</p>
+                                        <div className="flex items-center justify-between w-full sm:w-auto gap-4">
+                                            {/* Message Preview */}
+                                            <div className="text-right ml-auto sm:ml-0">
+                                                <p className="text-xs font-bold text-slate-400 uppercase tracking-wider block sm:hidden">Status</p>
                                                 <p className="text-sm font-semibold text-green-600">Active</p>
                                             </div>
 
@@ -747,16 +748,16 @@ export default function PatientDashboard() {
                                 {prescriptions.length === 0 && (
                                     <div className="text-center py-20 bg-white/50 rounded-3xl border-2 border-dashed border-slate-200">
                                         <div className="w-20 h-20 bg-indigo-50 rounded-full flex items-center justify-center mx-auto mb-6">
-                                            <FileText className="h-10 w-10 text-indigo-300" />
+                                            <MessageCircle className="h-10 w-10 text-indigo-300" />
                                         </div>
-                                        <h3 className="text-lg font-bold text-slate-900 mb-2">No Prescriptions</h3>
-                                        <p className="text-slate-500 max-w-sm mx-auto">Your medical prescriptions will appear here once added by your doctor.</p>
+                                        <h3 className="text-lg font-bold text-slate-900 mb-2">No Active Chats</h3>
+                                        <p className="text-slate-500 max-w-sm mx-auto">Start a conversation with your doctor by requesting a new prescription or consultation.</p>
                                     </div>
                                 )}
                             </div>
                         )}
 
-                        {activeTab === 'chats' && (
+                        {activeTab === 'doctors' && (
                             <div className="space-y-6">
                                 {/* Pending Requests */}
                                 {requests.length > 0 && (
@@ -797,25 +798,25 @@ export default function PatientDashboard() {
                                         <div
                                             key={d.id}
                                             onClick={() => navigate(`/profile/${d.doctor_id}`)}
-                                            className="bg-white/80 backdrop-blur-md p-6 rounded-2xl shadow-sm border border-slate-100 flex items-center justify-between hover:shadow-md hover:bg-white transition-all cursor-pointer group"
+                                            className="bg-white/80 backdrop-blur-md p-6 rounded-2xl shadow-sm border border-slate-100 flex flex-col sm:flex-row items-start sm:items-center justify-between gap-4 hover:shadow-md hover:bg-white transition-all cursor-pointer group"
                                         >
-                                            <div className="flex items-center">
-                                                <div className="bg-indigo-600 h-10 w-10 p-2 rounded-full mr-4 flex items-center justify-center text-white shadow-lg shadow-indigo-500/30 group-hover:scale-105 transition-transform">
+                                            <div className="flex items-center w-full sm:w-auto">
+                                                <div className="bg-indigo-600 h-10 w-10 p-2 rounded-full mr-4 flex items-center justify-center text-white shadow-lg shadow-indigo-500/30 group-hover:scale-105 transition-transform flex-shrink-0">
                                                     <User className="h-5 w-5" />
                                                 </div>
-                                                <div>
-                                                    <h4 className="font-bold text-slate-900 group-hover:text-indigo-600 transition-colors">{d.doctor?.full_name}</h4>
-                                                    <p className="text-xs text-slate-500 font-mono bg-slate-100 inline-block px-1.5 py-0.5 rounded mt-1">{d.doctor?.public_id}</p>
+                                                <div className="overflow-hidden">
+                                                    <h4 className="font-bold text-slate-900 group-hover:text-indigo-600 transition-colors truncate">{d.doctor?.full_name}</h4>
+                                                    <p className="text-xs text-slate-500 font-mono bg-slate-100 inline-block px-1.5 py-0.5 rounded mt-1">ID: {d.doctor?.public_id}</p>
                                                 </div>
                                             </div>
-                                            <div className="flex gap-2">
+                                            <div className="flex gap-2 w-full sm:w-auto justify-end sm:justify-start">
                                                 <button
                                                     onClick={(e) => {
                                                         e.stopPropagation()
                                                         setExpandedRx('LINK_' + d.id)
                                                         loadGlobalChat(d.id)
                                                     }}
-                                                    className="bg-indigo-50 text-indigo-600 px-3 py-1.5 rounded-lg text-xs font-bold hover:bg-indigo-100 transition-colors z-20"
+                                                    className="bg-indigo-50 text-indigo-600 px-3 py-1.5 rounded-lg text-xs font-bold hover:bg-indigo-100 transition-colors z-20 flex-1 sm:flex-none text-center"
                                                 >
                                                     Chat
                                                 </button>
