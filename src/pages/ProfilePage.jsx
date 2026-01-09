@@ -86,6 +86,7 @@ export default function ProfilePage() {
                 fetchedStats.patientCount = count || 0
             }
             setStats(fetchedStats)
+        } catch (err) {
             console.error(err)
             setError(err.message)
         } finally {
@@ -197,7 +198,7 @@ export default function ProfilePage() {
                 </div>
 
                 {/* Profile Header Card */}
-                <div className="bg-white/70 backdrop-blur-xl rounded-3xl p-8 shadow-xl shadow-slate-200/50 border border-white/60 mb-8 relative overflow-hidden group">
+                <div className="bg-white/70 backdrop-blur-xl rounded-3xl p-6 sm:p-8 shadow-xl shadow-slate-200/50 border border-white/60 mb-8 relative overflow-hidden group">
                     <div className="absolute top-0 right-0 p-32 bg-gradient-to-br from-indigo-500/10 to-blue-500/10 rounded-full blur-3xl -mr-16 -mt-16 transition-all group-hover:scale-110 duration-700" />
 
                     <div className="flex flex-col md:flex-row items-center md:items-start gap-8 relative z-10">

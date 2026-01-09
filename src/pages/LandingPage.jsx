@@ -48,7 +48,7 @@ export default function LandingPage() {
                         <span>Understand your health data safely</span>
                     </div>
 
-                    <h1 className="text-5xl sm:text-7xl font-extrabold text-slate-900 tracking-tight mb-8 leading-[1.1]">
+                    <h1 className="text-4xl sm:text-7xl font-extrabold text-slate-900 tracking-tight mb-8 leading-[1.1]">
                         Understand medical reports. <br className="hidden sm:block" />
                         <span className="bg-clip-text text-transparent bg-gradient-to-r from-indigo-600 to-purple-600">Share securely</span> with your doctor.
                     </h1>

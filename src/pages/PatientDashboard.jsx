@@ -483,9 +483,9 @@ export default function PatientDashboard() {
                         <div className="flex items-center gap-4">
                             <div
                                 onClick={() => navigate('/profile')}
-                                className="text-right cursor-pointer hover:bg-slate-50 p-2 rounded-lg transition-colors group flex flex-col items-end"
+                                className="text-right cursor-pointer hover:bg-slate-50 p-2 rounded-lg transition-colors group flex flex-col items-end max-w-[150px] sm:max-w-none"
                             >
-                                <p className="text-sm font-semibold text-slate-900 group-hover:text-blue-600 transition-colors max-w-[120px] sm:max-w-none truncate">{profile?.full_name}</p>
+                                <p className="text-sm font-semibold text-slate-900 group-hover:text-blue-600 transition-colors truncate w-full">{profile?.full_name}</p>
                                 <p className="text-xs text-slate-500 font-mono">ID: {profile?.public_id}</p>
                             </div>
                             <div className="h-8 w-px bg-slate-200 mx-2 hidden sm:block"></div>
@@ -502,7 +502,7 @@ export default function PatientDashboard() {
             </nav>
 
             <main className="relative z-10 max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8 pointer-events-auto">
-                <div className="grid grid-cols-1 lg:grid-cols-4 gap-8">
+                <div className="flex flex-col-reverse lg:grid lg:grid-cols-4 gap-8">
 
                     {/* Sidebar / Actions */}
                     <div className="space-y-6">
@@ -576,24 +576,26 @@ export default function PatientDashboard() {
                     <div className="lg:col-span-3 space-y-6">
 
                         {/* Tabs */}
-                        <div className="bg-white/50 backdrop-blur-sm p-1.5 rounded-xl inline-flex shadow-sm border border-white/60">
-                            {[
-                                { id: 'documents', label: 'Documents', icon: FileText },
-                                { id: 'chats', label: 'Chats', icon: MessageCircle },
-                                { id: 'doctors', label: 'Doctors', icon: Users },
-                            ].map(tab => (
-                                <button
-                                    key={tab.id}
-                                    onClick={() => setActiveTab(tab.id)}
-                                    className={`flex items-center gap-2 px-4 py-2.5 rounded-lg text-sm font-medium transition-all ${activeTab === tab.id
-                                        ? 'bg-white text-blue-600 shadow-md shadow-slate-200/50'
-                                        : 'text-slate-500 hover:text-slate-700 hover:bg-slate-100/50'
-                                        }`}
-                                >
-                                    {/* <tab.icon className="h-4 w-4" /> */}
-                                    {tab.label}
-                                </button>
-                            ))}
+                        <div className="w-full overflow-x-auto pb-2 -mb-2">
+                            <div className="bg-white/50 backdrop-blur-sm p-1.5 rounded-xl inline-flex shadow-sm border border-white/60 min-w-full sm:min-w-0">
+                                {[
+                                    { id: 'documents', label: 'Documents', icon: FileText },
+                                    { id: 'chats', label: 'Chats', icon: MessageCircle },
+                                    { id: 'doctors', label: 'Doctors', icon: Users },
+                                ].map(tab => (
+                                    <button
+                                        key={tab.id}
+                                        onClick={() => setActiveTab(tab.id)}
+                                        className={`flex-1 sm:flex-none flex items-center justify-center gap-2 px-4 py-2.5 rounded-lg text-sm font-medium transition-all whitespace-nowrap ${activeTab === tab.id
+                                            ? 'bg-white text-blue-600 shadow-md shadow-slate-200/50'
+                                            : 'text-slate-500 hover:text-slate-700 hover:bg-slate-100/50'
+                                            }`}
+                                    >
+                                        {/* <tab.icon className="h-4 w-4" /> */}
+                                        {tab.label}
+                                    </button>
+                                ))}
+                            </div>
                         </div>
 
                         {/* Tab Views */}
@@ -605,18 +607,18 @@ export default function PatientDashboard() {
                                 </div>
                                 {documents.map(doc => (
                                     <div key={doc.id} className="bg-white p-6 rounded-2xl shadow-sm border border-slate-100 hover:shadow-md transition-all group">
-                                        <div className="flex items-start justify-between gap-4">
+                                        <div className="flex flex-col sm:flex-row sm:items-start justify-between gap-4">
                                             {/* Icon & Details */}
-                                            <div className="flex gap-4">
+                                            <div className="flex gap-4 w-full sm:w-auto overflow-hidden">
                                                 {/* Icon Box */}
                                                 <div className="hidden sm:flex h-12 w-12 bg-slate-50 rounded-xl items-center justify-center flex-shrink-0 border border-slate-100">
                                                     <FileText className="h-6 w-6 text-slate-400 group-hover:text-blue-500 transition-colors" />
                                                 </div>
 
-                                                <div>
-                                                    <div className="flex items-center gap-3 mb-1">
-                                                        <h4 className="font-bold text-lg text-slate-900">{doc.title || "Untitled Record"}</h4>
-                                                        <span className={`px-2 py-0.5 rounded text-[10px] uppercase font-bold tracking-wider ${doc.type === 'Vaccination' ? 'bg-yellow-100 text-yellow-700' :
+                                                <div className="flex-1 min-w-0">
+                                                    <div className="flex flex-wrap items-center gap-2 mb-1">
+                                                        <h4 className="font-bold text-lg text-slate-900 truncate">{doc.title || "Untitled Record"}</h4>
+                                                        <span className={`px-2 py-0.5 rounded text-[10px] uppercase font-bold tracking-wider flex-shrink-0 ${doc.type === 'Vaccination' ? 'bg-yellow-100 text-yellow-700' :
                                                             doc.type === 'Prescription' ? 'bg-indigo-100 text-indigo-700' :
                                                                 doc.type === 'Lab Result' ? 'bg-purple-100 text-purple-700' :
                                                                     'bg-slate-100 text-slate-600'
@@ -625,23 +627,24 @@ export default function PatientDashboard() {
                                                         </span>
                                                     </div>
 
-                                                    <p className="text-slate-600 mb-3 text-sm leading-relaxed max-w-xl">
+                                                    <p className="text-slate-600 mb-3 text-sm leading-relaxed max-w-xl break-words line-clamp-2">
                                                         {doc.description || "No description provided."}
                                                     </p>
 
-                                                    <div className="flex items-center gap-4 text-xs text-slate-400 font-mono">
+                                                    <div className="flex flex-col sm:flex-row sm:items-center gap-1 sm:gap-4 text-xs text-slate-400 font-mono">
                                                         <span className="flex items-center">
                                                             Created: {doc.uploaded_at ? new Date(doc.uploaded_at).toLocaleDateString() : 'Unknown Date'}
                                                         </span>
-                                                        <span className="flex items-center">
-                                                            <FileText className="h-3 w-3 mr-1" /> {doc.filename}
+                                                        <span className="flex items-center truncate">
+                                                            <FileText className="h-3 w-3 mr-1 flex-shrink-0" /> <span className="truncate">{doc.filename}</span>
                                                         </span>
                                                     </div>
                                                 </div>
                                             </div>
 
                                             {/* Actions */}
-                                            <div className="flex items-center gap-2">
+                                            {/* Actions */}
+                                            <div className="flex flex-wrap sm:flex-nowrap items-center gap-2 mt-4 sm:mt-0 w-full sm:w-auto sm:ml-auto">
                                                 <a
                                                     href={doc.url}
                                                     onClick={async (e) => {
@@ -649,19 +652,19 @@ export default function PatientDashboard() {
                                                         const { data } = await supabase.storage.from('patient_documents').createSignedUrl(doc.storage_path, 60)
                                                         if (data) window.open(data.signedUrl, '_blank')
                                                     }}
-                                                    className="flex items-center px-4 py-2 text-slate-600 bg-white border border-slate-200 rounded-lg hover:bg-slate-50 font-medium text-sm transition-colors"
+                                                    className="flex-1 sm:flex-none flex items-center justify-center px-4 py-2 text-slate-600 bg-white border border-slate-200 rounded-lg hover:bg-slate-50 font-medium text-sm transition-colors whitespace-nowrap"
                                                 >
-                                                    <Upload className="h-4 w-4 mr-2 rotate-180" /> Download
+                                                    <Upload className="h-4 w-4 mr-2 rotate-180" /> <span className="sm:inline">Download</span>
                                                 </a>
                                                 <button
                                                     onClick={() => handleViewDocument(doc)}
-                                                    className="flex items-center px-4 py-2 text-blue-600 bg-blue-50 border border-blue-100 rounded-lg hover:bg-blue-100 font-medium text-sm transition-colors"
+                                                    className="flex-1 sm:flex-none flex items-center justify-center px-4 py-2 text-blue-600 bg-blue-50 border border-blue-100 rounded-lg hover:bg-blue-100 font-medium text-sm transition-colors whitespace-nowrap"
                                                 >
                                                     <Eye className="h-4 w-4 mr-2" /> View
                                                 </button>
                                                 <button
                                                     onClick={() => handleDeleteDocument(doc)}
-                                                    className="flex items-center px-3 py-2 text-red-500 hover:bg-red-50 rounded-lg transition-colors"
+                                                    className="flex-none flex items-center justify-center px-3 py-2 text-red-500 hover:bg-red-50 rounded-lg transition-colors border border-transparent hover:border-red-100"
                                                     title="Delete"
                                                 >
                                                     <Trash2 className="h-4 w-4" />

@@ -261,9 +261,9 @@ export default function DoctorDashboard() {
                         <div className="flex items-center gap-4">
                             <div
                                 onClick={() => navigate('/profile')}
-                                className="text-right hidden sm:block cursor-pointer hover:bg-slate-50 p-2 rounded-lg transition-colors group"
+                                className="text-right cursor-pointer hover:bg-slate-50 p-2 rounded-lg transition-colors group flex flex-col items-end"
                             >
-                                <p className="text-sm font-semibold text-slate-900 group-hover:text-indigo-600 transition-colors">{profile?.full_name}</p>
+                                <p className="text-sm font-semibold text-slate-900 group-hover:text-indigo-600 transition-colors max-w-[120px] sm:max-w-none truncate">{profile?.full_name}</p>
                                 <p className="text-xs text-slate-500 font-mono">ID: {profile?.public_id}</p>
                             </div>
                             <div className="h-8 w-px bg-slate-200 mx-2 hidden sm:block"></div>
@@ -295,13 +295,13 @@ export default function DoctorDashboard() {
                             onClick={() => navigate(`/profile/${selectedPatient.patient.id}`)}
                             className="bg-white/70 backdrop-blur-md p-6 rounded-2xl shadow-xl shadow-slate-200/50 border border-white/60 cursor-pointer hover:bg-white/90 transition-all group"
                         >
-                            <div className="flex items-center gap-5">
-                                <div className="flex items-center gap-5">
-                                    <div className="bg-indigo-100 p-4 rounded-full shadow-inner group-hover:scale-105 transition-transform">
+                            <div className="flex flex-col sm:flex-row items-center gap-5">
+                                <div className="flex items-center gap-5 w-full sm:w-auto">
+                                    <div className="bg-indigo-100 p-4 rounded-full shadow-inner group-hover:scale-105 transition-transform flex-shrink-0">
                                         <User className="h-8 w-8 text-indigo-600" />
                                     </div>
-                                    <div>
-                                        <h2 className="text-2xl font-bold text-slate-900 group-hover:text-indigo-600 transition-colors">{selectedPatient.patient.full_name}</h2>
+                                    <div className="overflow-hidden">
+                                        <h2 className="text-2xl font-bold text-slate-900 group-hover:text-indigo-600 transition-colors truncate">{selectedPatient.patient.full_name}</h2>
                                         <p className="text-slate-500 font-mono">ID: {selectedPatient.patient.public_id}</p>
                                     </div>
                                 </div>
@@ -311,7 +311,7 @@ export default function DoctorDashboard() {
                                         setExpandedRx('GLOBAL')
                                         loadMessages('GLOBAL')
                                     }}
-                                    className="ml-auto flex items-center gap-2 bg-indigo-600 text-white px-5 py-2.5 rounded-xl hover:bg-indigo-700 shadow-lg shadow-indigo-500/30 transition-all font-semibold"
+                                    className="w-full sm:w-auto ml-auto flex items-center justify-center gap-2 bg-indigo-600 text-white px-5 py-2.5 rounded-xl hover:bg-indigo-700 shadow-lg shadow-indigo-500/30 transition-all font-semibold"
                                 >
                                     <MessageCircle className="h-5 w-5" /> Chat
                                 </button>
@@ -369,23 +369,23 @@ export default function DoctorDashboard() {
                                                 setExpandedRx(rx.id)
                                                 loadMessages(rx.id)
                                             }}
-                                            className="p-4 bg-white border border-slate-100 rounded-xl shadow-sm hover:shadow-md transition-all cursor-pointer group flex items-center justify-between"
+                                            className="p-4 bg-white border border-slate-100 rounded-xl shadow-sm hover:shadow-md transition-all cursor-pointer group flex flex-col sm:flex-row items-start sm:items-center justify-between gap-4"
                                         >
-                                            <div className="flex items-center gap-4">
-                                                <div className="h-10 w-10 bg-indigo-50 rounded-lg flex items-center justify-center text-indigo-600 font-bold group-hover:scale-105 transition-transform">
+                                            <div className="flex items-center gap-4 w-full sm:w-auto">
+                                                <div className="h-10 w-10 bg-indigo-50 rounded-lg flex items-center justify-center text-indigo-600 font-bold group-hover:scale-105 transition-transform flex-shrink-0">
                                                     Rx
                                                 </div>
-                                                <div className="overflow-hidden">
+                                                <div className="overflow-hidden flex-1">
                                                     <p className="text-xs font-semibold text-slate-400 uppercase tracking-wide flex items-center gap-1.5 mb-1">
                                                         <Clock className="h-3 w-3" />
                                                         {new Date(rx.created_at).toLocaleDateString()}
                                                     </p>
-                                                    <p className="text-sm font-bold text-slate-700 truncate max-w-[200px]">
+                                                    <p className="text-sm font-bold text-slate-700 truncate max-w-full sm:max-w-[200px]">
                                                         {rx.medication_text.substring(0, 30)}{rx.medication_text.length > 30 ? '...' : ''}
                                                     </p>
                                                 </div>
                                             </div>
-                                            <div className="flex items-center gap-2">
+                                            <div className="flex items-center gap-2 self-end sm:self-auto">
                                                 <button
                                                     onClick={(e) => {
                                                         e.stopPropagation()
