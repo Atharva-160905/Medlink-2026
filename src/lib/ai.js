@@ -1,39 +1,54 @@
-const OLLAMA_URL = "/api/ollama/api/generate";
-const OLLAMA_MODEL = "llama3.2"; // Detected local model
+const API_KEY = import.meta.env.VITE_GEMINI_API_KEY;
+
+// Check if API key is present on load
+if (!API_KEY) {
+    console.error("Missing VITE_GEMINI_API_KEY in environment variables.");
+}
+
+// Using v1beta and gemini-2.5-flash (newest model, confirmed available)
+const GEMINI_URL = `https://generativelanguage.googleapis.com/v1beta/models/gemini-2.5-flash:generateContent?key=${API_KEY}`;
 
 /**
- * Call local Ollama instance.
+ * Call Google Gemini API via REST.
  */
-async function callOllama(prompt) {
+export async function callGemini(prompt) {
+    if (!API_KEY) {
+        throw new Error("Gemini API Key is missing. Please check your .env file.");
+    }
+
     try {
-        const response = await fetch(OLLAMA_URL, {
+        const response = await fetch(GEMINI_URL, {
             method: "POST",
             headers: {
                 "Content-Type": "application/json"
             },
             body: JSON.stringify({
-                model: OLLAMA_MODEL,
-                prompt: prompt,
-                stream: false,
-                options: {
-                    temperature: 0.2, // Slight creativity for explanations, but grounded
-                    num_ctx: 8192
-                }
+                contents: [{
+                    parts: [{ text: prompt }]
+                }]
             })
         });
 
         if (!response.ok) {
-            throw new Error(`Ollama Error: ${response.statusText}`);
+            const text = await response.text();
+            if (response.status === 429) {
+                throw new Error("Quota exceeded (429). The free tier is temporarily exhausted. Please try again in 5-10 minutes.");
+            }
+            throw new Error(`Gemini Error: ${response.status} ${response.statusText} - ${text}`);
         }
 
         const data = await response.json();
-        return data.response || "";
+        const text = data?.candidates?.[0]?.content?.parts?.[0]?.text;
+
+        if (!text) {
+            // Fallback or just empty
+            return "";
+        }
+
+        return text;
 
     } catch (e) {
-        console.error("Ollama Connection Failed:", e);
-        if (e.message.includes("Failed to fetch") || e.message.includes("NetworkError")) {
-            throw new Error("Local AI is not running. Please start Ollama (run 'ollama serve').");
-        }
+        console.error("Gemini API Connection Failed:", e);
         throw e;
     }
 }
@@ -60,9 +75,8 @@ RULES:
     const prompt = `${SYSTEM_PREAMBLE}\n\nDOCUMENT TEXT:\n${text}\n\nPATIENT SUMMARY:`;
 
     try {
-        console.log(`[Ollama] Generating summary...`);
-        const result = await callOllama(prompt);
-        return result.trim();
+        console.log(`[Gemini] Generating summary...`);
+        return await callGemini(prompt);
     } catch (e) {
         return `Error: ${e.message}`;
     }
@@ -77,7 +91,7 @@ Do NOT provide diagnosis or medical advice.
 Just the definition.`;
 
     try {
-        return await callOllama(prompt);
+        return await callGemini(prompt);
     } catch (e) {
         return `Error: ${e.message}`;
     }
