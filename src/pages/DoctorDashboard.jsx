@@ -97,40 +97,51 @@ export default function DoctorDashboard() {
     }
 
     const addPatient = async () => {
-        if (!patientIdInput) return
+        if (!patientIdInput.trim()) return
         try {
+            const { data: { user }, error: authError } = await supabase.auth.getUser()
+            if (authError || !user) {
+                alert('Session expired. Please log in again.')
+                navigate('/login')
+                return
+            }
+
             const { data: pat, error: patError } = await supabase
                 .from('profiles')
-                .select('id')
+                .select('id, full_name')
                 .eq('role', 'patient')
-                .eq('public_id', patientIdInput)
+                .eq('public_id', patientIdInput.trim())
                 .single()
 
             if (patError || !pat) {
-                alert('Patient not found')
+                alert('Patient not found with ID: ' + patientIdInput.trim())
+                return
+            }
+
+            if (pat.id === user.id) {
+                alert('You cannot link yourself as your own patient.')
                 return
             }
 
             const { error } = await supabase
                 .from('doctor_patient_links')
                 .insert({
-                    doctor_id: profile.id,
+                    doctor_id: user.id,
                     patient_id: pat.id,
                     status: 'pending', // Must be accepted by patient
-                    created_by: 'doctor' // Corrected from 'patient' to 'doctor'? Wait.
-                    // In PatientDashboard, patient adds doctor => created_by='patient'.
-                    // Here doctor adds patient => created_by='doctor'.
+                    created_by: 'doctor'
                 })
 
             if (error) {
-                if (error.code === '23505') alert('Request already sent or linked')
+                if (error.code === '23505') alert('Request already sent or linked with this patient!')
                 else throw error
             } else {
-                alert('Request sent to patient. They must approve it.')
+                alert(`Request sent to patient ${pat.full_name || ''}. They must approve it.`)
                 setPatientIdInput('')
-                loadPatients(profile.id)
+                loadPatients(user.id)
             }
         } catch (e) {
+            console.error('Error adding patient:', e)
             alert(e.message)
         }
     }

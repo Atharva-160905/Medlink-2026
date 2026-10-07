@@ -320,19 +320,31 @@ export default function PatientDashboard() {
 
 
     const addDoctor = async () => {
-        if (!doctorIdInput) return
+        if (!doctorIdInput.trim()) return
 
         try {
+            const { data: { user }, error: authError } = await supabase.auth.getUser()
+            if (authError || !user) {
+                alert('Session expired or not logged in. Please log in again.')
+                navigate('/login')
+                return
+            }
+
             // Find doctor by public ID
             const { data: doc, error: docError } = await supabase
                 .from('profiles')
-                .select('id')
+                .select('id, full_name')
                 .eq('role', 'doctor')
-                .eq('public_id', doctorIdInput)
+                .eq('public_id', doctorIdInput.trim())
                 .single()
 
             if (docError || !doc) {
-                alert('Doctor not found with that ID')
+                alert('Doctor not found with ID: ' + doctorIdInput.trim())
+                return
+            }
+
+            if (doc.id === user.id) {
+                alert('You cannot link yourself as your own doctor.')
                 return
             }
 
@@ -341,21 +353,22 @@ export default function PatientDashboard() {
                 .from('doctor_patient_links')
                 .insert({
                     doctor_id: doc.id,
-                    patient_id: profile.id,
+                    patient_id: user.id,
                     status: 'active',
                     created_by: 'patient'
                 })
 
             if (linkError) {
-                if (linkError.code === '23505') alert('Already linked!')
+                if (linkError.code === '23505') alert('Already linked with this doctor!')
                 else throw linkError
             } else {
-                alert('Doctor added successfully!')
+                alert(`Doctor ${doc.full_name || ''} added successfully!`)
                 setDoctorIdInput('')
-                loadData(profile.id)
+                loadData(user.id)
             }
 
         } catch (error) {
+            console.error('Error adding doctor:', error)
             alert('Error adding doctor: ' + error.message)
         }
     }
