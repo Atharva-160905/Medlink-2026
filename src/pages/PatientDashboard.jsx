@@ -296,7 +296,12 @@ export default function PatientDashboard() {
             try {
                 summary = await generateMedicalSummary(data.signedUrl, doc.filename || doc.storage_path)
             } catch (multimodalErr) {
-                console.warn('Multimodal summary failed, attempting OCR text extraction fallback...', multimodalErr)
+                console.error('Multimodal summary error:', multimodalErr)
+                const isPdf = (doc.filename || doc.storage_path || '').toLowerCase().includes('.pdf')
+                if (isPdf || multimodalErr.message?.includes('API Key') || multimodalErr.message?.includes('Quota') || multimodalErr.message?.includes('Gemini Error')) {
+                    throw multimodalErr
+                }
+                // Only fallback for non-PDF image OCR if applicable
                 const text = await extractTextFromUrl(data.signedUrl)
                 summary = await generateMedicalSummary(text)
             }

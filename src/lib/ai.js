@@ -2,7 +2,7 @@ const API_KEY = import.meta.env.VITE_GEMINI_API_KEY;
 
 // Check if API key is present on load
 if (!API_KEY) {
-    console.error("Missing VITE_GEMINI_API_KEY in environment variables.");
+    console.error("Missing VITE_GEMINI_API_KEY in environment variables. If deploying on Vercel, add VITE_GEMINI_API_KEY to Project Settings > Environment Variables.");
 }
 
 // Using v1beta and gemini-2.5-flash (newest model, confirmed available)
@@ -13,7 +13,7 @@ const GEMINI_URL = `https://generativelanguage.googleapis.com/v1beta/models/gemi
  */
 export async function callGemini(prompt) {
     if (!API_KEY) {
-        throw new Error("Gemini API Key is missing. Please check your .env file.");
+        throw new Error("Gemini API Key is missing. Please add VITE_GEMINI_API_KEY to your Vercel Environment Variables and redeploy.");
     }
 
     try {
@@ -95,7 +95,7 @@ async function fileUrlToBase64(url, filename = '') {
  */
 export async function callGeminiMultimodal({ prompt, base64Data, mimeType }) {
     if (!API_KEY) {
-        throw new Error("Gemini API Key is missing. Please check your .env file.");
+        throw new Error("Gemini API Key is missing. Please add VITE_GEMINI_API_KEY to your Vercel Environment Variables and redeploy.");
     }
 
     try {
