@@ -285,14 +285,21 @@ export default function PatientDashboard() {
         try {
             setSummarizing(prev => ({ ...prev, [doc.id]: true }))
 
-            // Get URL & Extract
+            // 1. Get Signed URL
             const { data, error } = await supabase.storage
                 .from('patient_documents')
                 .createSignedUrl(doc.storage_path, 300)
             if (error) throw error
 
-            const text = await extractTextFromUrl(data.signedUrl)
-            const summary = await generateMedicalSummary(text)
+            // 2. Generate Summary using Gemini Multimodal Vision (reads PDFs and images directly)
+            let summary = ''
+            try {
+                summary = await generateMedicalSummary(data.signedUrl, doc.filename || doc.storage_path)
+            } catch (multimodalErr) {
+                console.warn('Multimodal summary failed, attempting OCR text extraction fallback...', multimodalErr)
+                const text = await extractTextFromUrl(data.signedUrl)
+                summary = await generateMedicalSummary(text)
+            }
 
             // Save to DB
             const { error: updateError } = await supabase
