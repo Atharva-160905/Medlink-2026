@@ -37,17 +37,17 @@ export default function ChatModal({
     if (!isOpen) return null
 
     return (
-        <div className="fixed inset-0 bg-slate-900/60 backdrop-blur-sm z-[80] flex items-center justify-center p-4 animate-in fade-in duration-200">
-            <div className="bg-[#E5DDD5] w-full max-w-2xl h-[85vh] rounded-2xl shadow-2xl flex flex-col overflow-hidden relative">
+        <div className="fixed inset-0 bg-slate-900/60 backdrop-blur-sm z-[80] flex items-center justify-center p-2 sm:p-4 animate-in fade-in duration-200">
+            <div className="bg-[#E5DDD5] w-full max-w-2xl h-[92vh] sm:h-[85vh] rounded-2xl shadow-2xl flex flex-col overflow-hidden relative">
                 {/* Header - WhatsApp style */}
-                <div className="bg-[#008069] text-white p-4 flex items-center justify-between shadow-md z-10">
-                    <div className="flex items-center gap-3">
-                        <div className="h-10 w-10 bg-white/20 rounded-full flex items-center justify-center font-bold text-white text-lg">
+                <div className="bg-[#008069] text-white p-3 sm:p-4 flex items-center justify-between shadow-md z-10">
+                    <div className="flex items-center gap-2.5 sm:gap-3 min-w-0">
+                        <div className="h-9 w-9 sm:h-10 sm:w-10 bg-white/20 rounded-full flex items-center justify-center font-bold text-white text-base sm:text-lg flex-shrink-0">
                             {role === 'patient' ? (doctorName?.[0] || 'D') : (patientName?.[0] || 'P')}
                         </div>
-                        <div>
-                            <h3 className="font-bold text-lg">{role === 'patient' ? `Dr. ${doctorName}` : patientName}</h3>
-                            <p className="text-xs text-white/80 flex items-center gap-1">
+                        <div className="min-w-0">
+                            <h3 className="font-bold text-sm sm:text-lg truncate">{role === 'patient' ? `Dr. ${doctorName}` : patientName}</h3>
+                            <p className="text-[11px] sm:text-xs text-white/80 flex items-center gap-1">
                                 {prescription ? (
                                     <><Clock className="h-3 w-3" /> {new Date(prescription.created_at).toLocaleDateString()}</>
                                 ) : (
@@ -58,21 +58,21 @@ export default function ChatModal({
                     </div>
                     <button
                         onClick={onClose}
-                        className="p-2 hover:bg-white/10 rounded-full transition-colors"
+                        className="p-1.5 sm:p-2 hover:bg-white/10 rounded-full transition-colors flex-shrink-0 cursor-pointer"
                     >
-                        <X className="h-6 w-6" />
+                        <X className="h-5 w-5 sm:h-6 sm:w-6" />
                     </button>
                 </div>
 
                 {/* Error Banner */}
                 {error && (
-                    <div className="bg-red-50 text-red-600 px-4 py-3 text-xs font-semibold text-center border-b border-red-100 flex items-center justify-center animate-in slide-in-from-top-2">
+                    <div className="bg-red-50 text-red-600 px-4 py-2 sm:py-3 text-xs font-semibold text-center border-b border-red-100 flex items-center justify-center animate-in slide-in-from-top-2">
                         <span className="mr-2">⚠️</span> {error}
                     </div>
                 )}
 
-                {/* Chat Area */}
-                <div className="flex-1 overflow-y-auto p-4 space-y-4 bg-[url('https://user-images.githubusercontent.com/15075759/287119144-86dc0f70-73b1-4148-8161-eb12d60699d2.png')] bg-repeat bg-opacity-10">
+                {/* Chat Area with data-lenis-prevent */}
+                <div data-lenis-prevent className="flex-1 overflow-y-auto p-3 sm:p-4 space-y-3 sm:space-y-4 bg-[url('https://user-images.githubusercontent.com/15075759/287119144-86dc0f70-73b1-4148-8161-eb12d60699d2.png')] bg-repeat bg-opacity-10">
 
                     {/* Prescription Card (Pinned at top of chat) */}
                     {prescription && (

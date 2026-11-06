@@ -1,0 +1,48 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 128 128" width="100%" height="100%">
+  <defs>
+    <linearGradient id="bg-koala" x1="0" y1="0" x2="1" y2="1">
+      <stop offset="0%" stop-color="#DCFCE7"/>
+      <stop offset="100%" stop-color="#BBF7D0"/>
+    </linearGradient>
+    <linearGradient id="scrubs-koala" x1="0" y1="0" x2="0" y2="1">
+      <stop offset="0%" stop-color="#059669"/>
+      <stop offset="100%" stop-color="#047857"/>
+    </linearGradient>
+  </defs>
+  <!-- Background -->
+  <rect width="128" height="128" rx="28" fill="url(#bg-koala)"/>
+
+  <!-- Scrubs -->
+  <path d="M22 128 C22 96 38 88 64 88 C90 88 106 96 106 128 Z" fill="url(#scrubs-koala)"/>
+  <path d="M52 88 L64 104 L76 88 Z" fill="#FFFFFF"/>
+  <path d="M57 88 L64 97 L71 88 Z" fill="#DCFCE7"/>
+
+  <!-- Stethoscope -->
+  <path d="M42 94 C42 110 52 118 64 118 C76 118 86 110 86 94" fill="none" stroke="#334155" stroke-width="3" stroke-linecap="round"/>
+  <circle cx="64" cy="118" r="4.5" fill="#E2E8F0" stroke="#334155" stroke-width="1.5"/>
+
+  <!-- Fluffy Koala Ears -->
+  <circle cx="34" cy="38" r="16" fill="#94A3B8"/>
+  <circle cx="34" cy="38" r="10" fill="#F1F5F9"/>
+  <circle cx="94" cy="38" r="16" fill="#94A3B8"/>
+  <circle cx="94" cy="38" r="10" fill="#F1F5F9"/>
+
+  <!-- Koala Head -->
+  <circle cx="64" cy="56" r="32" fill="#64748B"/>
+  <ellipse cx="64" cy="64" rx="20" ry="14" fill="#94A3B8"/>
+
+  <!-- Big Koala Nose -->
+  <ellipse cx="64" cy="58" rx="9" ry="13" fill="#1E293B"/>
+
+  <!-- Eyes -->
+  <circle cx="46" cy="48" r="4" fill="#1E293B"/>
+  <circle cx="47.5" cy="46.5" r="1.5" fill="#FFFFFF"/>
+  <circle cx="82" cy="48" r="4" fill="#1E293B"/>
+  <circle cx="83.5" cy="46.5" r="1.5" fill="#FFFFFF"/>
+
+  <!-- Doctor Headband with Mirror -->
+  <path d="M38 32 C46 28 82 28 90 32" fill="none" stroke="#475569" stroke-width="2.5" stroke-linecap="round"/>
+  <circle cx="64" cy="28" r="6" fill="#E2E8F0" stroke="#475569" stroke-width="1.5"/>
+  <circle cx="64" cy="28" r="2.5" fill="#38BDF8"/>
+</svg>
+

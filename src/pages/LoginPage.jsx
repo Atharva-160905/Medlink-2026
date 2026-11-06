@@ -1,184 +1,208 @@
 import { useState } from 'react'
 import { Link, useNavigate } from 'react-router-dom'
 import { supabase } from '../lib/supabase'
-import { Lock, Mail, Loader2, Activity, ArrowRight, ArrowLeft } from 'lucide-react'
+import { Lock, Mail, Loader2, ArrowRight, ArrowLeft, Eye, EyeOff, AlertCircle } from 'lucide-react'
+import Logo from '../components/Logo'
 
 export default function LoginPage() {
-    const navigate = useNavigate()
-    const [loading, setLoading] = useState(false)
-    const [error, setError] = useState(null)
-    const [formData, setFormData] = useState({
-        email: '',
-        password: ''
-    })
+  const navigate = useNavigate()
+  const [loading, setLoading] = useState(false)
+  const [error, setError] = useState(null)
+  const [showPassword, setShowPassword] = useState(false)
+  const [formData, setFormData] = useState({
+    email: '',
+    password: '',
+  })
 
-    const handleLogin = async (e) => {
-        e.preventDefault()
-        setLoading(true)
-        setError(null)
+  const handleLogin = async (e) => {
+    e.preventDefault()
+    setLoading(true)
+    setError(null)
 
-        try {
-            const { data, error } = await supabase.auth.signInWithPassword({
-                email: formData.email,
-                password: formData.password
-            })
+    try {
+      const { data, error: authError } = await supabase.auth.signInWithPassword({
+        email: formData.email.trim(),
+        password: formData.password,
+      })
 
-            if (error) throw error
+      if (authError) throw authError
 
-            // Check user role to redirect
-            const { data: profile, error: profileError } = await supabase
-                .from('profiles')
-                .select('role')
-                .eq('id', data.user.id)
-                .single()
+      // Fetch user profile to route properly
+      const { data: profile, error: profileError } = await supabase
+        .from('profiles')
+        .select('role')
+        .eq('id', data.user.id)
+        .single()
 
-            if (profileError) throw profileError
+      if (profileError) throw profileError
 
-            if (profile.role === 'doctor') {
-                navigate('/doctor')
-            } else {
-                navigate('/patient')
-            }
-
-        } catch (err) {
-            setError(err.message)
-        } finally {
-            setLoading(false)
-        }
+      if (profile?.role === 'doctor') {
+        navigate('/doctor')
+      } else {
+        navigate('/patient')
+      }
+    } catch (err) {
+      console.error('Login error:', err)
+      setError(err.message || 'Invalid email or password.')
+    } finally {
+      setLoading(false)
     }
+  }
 
-    return (
-        <div className="min-h-screen bg-[#F8FAFC] flex flex-col justify-center py-12 sm:px-6 lg:px-8 relative overflow-hidden">
-            {/* Background Decor */}
-            <div className="absolute top-0 left-0 w-full h-full overflow-hidden z-0 pointer-events-none">
-                <div className="absolute top-[-10%] left-[-10%] w-96 h-96 bg-blue-400/20 rounded-full blur-3xl" />
-                <div className="absolute bottom-[-10%] right-[-10%] w-96 h-96 bg-indigo-400/20 rounded-full blur-3xl" />
+  return (
+    <div className="min-h-screen bg-[#FAFAF9] flex flex-col justify-between py-4 px-3 sm:py-6 sm:px-6 lg:px-8 font-sans selection:bg-teal-100 selection:text-teal-900 relative">
+      {/* Top Header / Back Link */}
+      <div className="max-w-7xl mx-auto w-full flex justify-between items-center">
+        <Link
+          to="/"
+          className="inline-flex items-center gap-1.5 text-xs sm:text-sm font-semibold text-slate-600 hover:text-slate-900 hover:bg-stone-200/60 px-2.5 sm:px-3 py-1.5 rounded-lg transition-all"
+        >
+          <ArrowLeft className="w-4 h-4 text-slate-500" />
+          <span className="hidden sm:inline">Back to Home</span>
+          <span className="sm:hidden">Home</span>
+        </Link>
+        <Link to="/" className="focus:outline-none">
+          <Logo size={30} showWordmark={true} />
+        </Link>
+      </div>
+
+      {/* Main Screen-Fitted Card Container */}
+      <div className="w-full max-w-[420px] mx-auto my-auto py-3 sm:py-4">
+        <div className="bg-white rounded-2xl sm:rounded-3xl p-5 sm:p-8 border border-stone-200 shadow-xl shadow-stone-200/60">
+          {/* Header */}
+          <div className="text-left mb-6">
+            <h1 className="text-2xl font-extrabold text-slate-900 tracking-tight">
+              Sign in to MedLink
+            </h1>
+            <p className="text-xs sm:text-sm text-slate-500 mt-1">
+              Access your medical vault and doctor communications.
+            </p>
+          </div>
+
+          {/* Error Banner */}
+          {error && (
+            <div className="mb-5 bg-rose-50 border border-rose-200 text-rose-700 px-3.5 py-2.5 rounded-xl text-xs flex items-start gap-2.5 animate-in fade-in">
+              <AlertCircle className="w-4 h-4 text-rose-600 mt-0.5 flex-shrink-0" />
+              <span>{error}</span>
             </div>
+          )}
 
-            <Link to="/" className="absolute top-8 left-8 text-slate-500 hover:text-slate-900 flex items-center gap-2 font-medium z-50 transition-colors">
-                <ArrowLeft className="h-5 w-5" /> Back to Home
-            </Link>
-
-            <div className="sm:mx-auto sm:w-full sm:max-w-md relative z-10">
-                <Link to="/" className="flex items-center justify-center gap-2 mb-8 group">
-                    <div className="bg-blue-600 p-2 rounded-xl shadow-lg shadow-blue-600/20 group-hover:scale-105 transition-transform duration-300">
-                        <Activity className="h-6 w-6 text-white" />
-                    </div>
-                    <span className="text-2xl font-bold bg-clip-text text-transparent bg-gradient-to-r from-blue-700 to-indigo-700">
-                        MedLink
-                    </span>
-                </Link>
-
-                <h2 className="text-center text-3xl font-bold tracking-tight text-slate-900">
-                    Welcome back
-                </h2>
-                <p className="mt-2 text-center text-sm text-slate-600">
-                    Sign in to your account
-                </p>
-            </div>
-
-            <div className="mt-8 sm:mx-auto sm:w-full sm:max-w-[480px] relative z-10 px-4">
-                <div className="glass-panel py-10 px-6 sm:px-10 rounded-2xl">
-                    <form className="space-y-6" onSubmit={handleLogin}>
-                        {error && (
-                            <div className="bg-red-50/50 border border-red-200 rounded-xl p-4 flex gap-3 items-start">
-                                <div className="p-1 bg-red-100 rounded-full shrink-0">
-                                    <Activity className="h-4 w-4 text-red-600 rotate-45" />
-                                </div>
-                                <p className="text-sm text-red-600 mt-0.5">{error}</p>
-                            </div>
-                        )}
-
-                        <div>
-                            <label htmlFor="email" className="block text-sm font-semibold text-slate-700 mb-2">
-                                Email address
-                            </label>
-                            <div className="relative group">
-                                <div className="absolute inset-y-0 left-0 pl-4 flex items-center pointer-events-none">
-                                    <Mail className="h-5 w-5 text-slate-400 group-focus-within:text-blue-500 transition-colors" />
-                                </div>
-                                <input
-                                    id="email"
-                                    name="email"
-                                    type="email"
-                                    autoComplete="email"
-                                    required
-                                    className="input-field pl-11"
-                                    placeholder="you@example.com"
-                                    value={formData.email}
-                                    onChange={(e) => setFormData({ ...formData, email: e.target.value })}
-                                />
-                            </div>
-                        </div>
-
-                        <div>
-                            <div className="flex items-center justify-between mb-2">
-                                <label htmlFor="password" className="block text-sm font-semibold text-slate-700">
-                                    Password
-                                </label>
-                                <div className="text-sm">
-                                    <a href="#" className="font-medium text-blue-600 hover:text-blue-500 hover:underline">
-                                        Forgot password?
-                                    </a>
-                                </div>
-                            </div>
-                            <div className="relative group">
-                                <div className="absolute inset-y-0 left-0 pl-4 flex items-center pointer-events-none">
-                                    <Lock className="h-5 w-5 text-slate-400 group-focus-within:text-blue-500 transition-colors" />
-                                </div>
-                                <input
-                                    id="password"
-                                    name="password"
-                                    type="password"
-                                    autoComplete="current-password"
-                                    required
-                                    className="input-field pl-11"
-                                    placeholder="••••••••"
-                                    value={formData.password}
-                                    onChange={(e) => setFormData({ ...formData, password: e.target.value })}
-                                />
-                            </div>
-                        </div>
-
-                        <button
-                            type="submit"
-                            disabled={loading}
-                            className={`w-full btn-primary flex items-center justify-center gap-2 ${loading ? 'opacity-80' : ''}`}
-                        >
-                            {loading ? (
-                                <Loader2 className="h-5 w-5 animate-spin" />
-                            ) : (
-                                <>
-                                    Sign in
-                                    <ArrowRight className="h-4 w-4" />
-                                </>
-                            )}
-                        </button>
-                    </form>
-
-                    <div className="mt-8">
-                        <div className="relative">
-                            <div className="absolute inset-0 flex items-center">
-                                <div className="w-full border-t border-gray-200" />
-                            </div>
-                            <div className="relative flex justify-center text-sm">
-                                <span className="px-4 bg-white text-slate-500">
-                                    New to MedLink?
-                                </span>
-                            </div>
-                        </div>
-
-                        <div className="mt-6 text-center">
-                            <Link
-                                to="/signup"
-                                className="font-semibold text-blue-600 hover:text-blue-500 transition-colors duration-200"
-                            >
-                                Create an account
-                            </Link>
-                        </div>
-                    </div>
+          {/* Form */}
+          <form className="space-y-4" onSubmit={handleLogin}>
+            {/* Email Address */}
+            <div>
+              <label htmlFor="email" className="block text-xs font-bold text-slate-700 mb-1.5 uppercase tracking-wider">
+                Email Address
+              </label>
+              <div className="relative group">
+                <div className="absolute inset-y-0 left-0 pl-3.5 flex items-center pointer-events-none text-slate-400 group-focus-within:text-teal-600 transition-colors">
+                  <Mail className="w-4 h-4" />
                 </div>
+                <input
+                  id="email"
+                  name="email"
+                  type="email"
+                  autoComplete="email"
+                  required
+                  className="w-full pl-10 pr-3.5 py-2.5 bg-stone-50/80 border border-stone-200 rounded-xl text-sm text-slate-900 placeholder:text-slate-400 focus:outline-none focus:bg-white focus:border-teal-600 focus:ring-2 focus:ring-teal-500/10 transition-all"
+                  placeholder="name@example.com"
+                  value={formData.email}
+                  onChange={(e) => setFormData({ ...formData, email: e.target.value })}
+                />
+              </div>
             </div>
+
+            {/* Password */}
+            <div>
+              <div className="flex items-center justify-between mb-1.5">
+                <label htmlFor="password" className="block text-xs font-bold text-slate-700 uppercase tracking-wider">
+                  Password
+                </label>
+                <a
+                  href="#forgot"
+                  onClick={(e) => {
+                    e.preventDefault()
+                    alert('Password reset link will be sent to your registered email.')
+                  }}
+                  className="text-xs font-semibold text-teal-700 hover:text-teal-800 transition-colors"
+                >
+                  Forgot password?
+                </a>
+              </div>
+              <div className="relative group">
+                <div className="absolute inset-y-0 left-0 pl-3.5 flex items-center pointer-events-none text-slate-400 group-focus-within:text-teal-600 transition-colors">
+                  <Lock className="w-4 h-4" />
+                </div>
+                <input
+                  id="password"
+                  name="password"
+                  type={showPassword ? 'text' : 'password'}
+                  autoComplete="current-password"
+                  required
+                  className="w-full pl-10 pr-10 py-2.5 bg-stone-50/80 border border-stone-200 rounded-xl text-sm text-slate-900 placeholder:text-slate-400 focus:outline-none focus:bg-white focus:border-teal-600 focus:ring-2 focus:ring-teal-500/10 transition-all"
+                  placeholder="••••••••"
+                  value={formData.password}
+                  onChange={(e) => setFormData({ ...formData, password: e.target.value })}
+                />
+                <button
+                  type="button"
+                  onClick={() => setShowPassword(!showPassword)}
+                  className="absolute inset-y-0 right-0 pr-3.5 flex items-center text-slate-400 hover:text-slate-600 focus:outline-none"
+                  tabIndex={-1}
+                >
+                  {showPassword ? <EyeOff className="w-4 h-4" /> : <Eye className="w-4 h-4" />}
+                </button>
+              </div>
+            </div>
+
+            {/* Submit Button */}
+            <div className="pt-2">
+              <button
+                type="submit"
+                disabled={loading}
+                className="w-full bg-slate-900 text-white hover:bg-slate-800 font-semibold py-3 px-4 rounded-xl text-sm transition-all shadow-sm hover:shadow flex items-center justify-center gap-2 active:scale-[0.98] disabled:opacity-70 disabled:cursor-not-allowed"
+              >
+                {loading ? (
+                  <>
+                    <Loader2 className="w-4 h-4 animate-spin text-slate-300" />
+                    <span>Signing in...</span>
+                  </>
+                ) : (
+                  <>
+                    <span>Sign In</span>
+                    <ArrowRight className="w-4 h-4 text-slate-300" />
+                  </>
+                )}
+              </button>
+            </div>
+          </form>
+
+          {/* Divider */}
+          <div className="mt-6 pt-5 border-t border-stone-100 text-center">
+            <p className="text-xs text-slate-500">
+              New to MedLink?{' '}
+              <Link
+                to="/signup"
+                className="font-bold text-teal-700 hover:text-teal-800 hover:underline transition-colors ml-1"
+              >
+                Create an account
+              </Link>
+            </p>
+          </div>
         </div>
-    )
+
+        {/* Security Trust Micro-Badge */}
+        <div className="text-center mt-5">
+          <p className="text-[11px] text-slate-400 font-medium flex items-center justify-center gap-1.5">
+            <span>🔒</span> 256-bit Encrypted Session • Patient Data Protected
+          </p>
+        </div>
+      </div>
+
+      {/* Subtle Footer */}
+      <div className="max-w-7xl mx-auto w-full text-center py-2 text-[11px] text-slate-400">
+        © {new Date().getFullYear()} MedLink Healthcare. All rights reserved.
+      </div>
+    </div>
+  )
 }

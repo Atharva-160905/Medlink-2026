@@ -1,0 +1,56 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 128 128" width="100%" height="100%">
+  <defs>
+    <linearGradient id="bg-owl" x1="0" y1="0" x2="1" y2="1">
+      <stop offset="0%" stop-color="#E0F2FE"/>
+      <stop offset="100%" stop-color="#BAE6FD"/>
+    </linearGradient>
+    <linearGradient id="scrubs" x1="0" y1="0" x2="0" y2="1">
+      <stop offset="0%" stop-color="#0284C7"/>
+      <stop offset="100%" stop-color="#0369A1"/>
+    </linearGradient>
+  </defs>
+  <!-- Background -->
+  <rect width="128" height="128" rx="28" fill="url(#bg-owl)"/>
+  
+  <!-- Doctor Scrubs/Coat -->
+  <path d="M24 128 C24 98 40 88 64 88 C88 88 104 98 104 128 Z" fill="url(#scrubs)"/>
+  <path d="M52 88 L64 104 L76 88 Z" fill="#FFFFFF"/>
+  <path d="M58 88 L64 96 L70 88 Z" fill="#E0F2FE"/>
+
+  <!-- Stethoscope around neck -->
+  <path d="M42 94 C42 110 52 118 64 118 C76 118 86 110 86 94" fill="none" stroke="#334155" stroke-width="3" stroke-linecap="round"/>
+  <circle cx="64" cy="118" r="4.5" fill="#94A3B8" stroke="#334155" stroke-width="1.5"/>
+  <circle cx="64" cy="118" r="2" fill="#38BDF8"/>
+
+  <!-- Owl Head & Ears -->
+  <!-- Ear Tufts -->
+  <path d="M36 38 L48 20 L52 38 Z" fill="#78350F"/>
+  <path d="M92 38 L80 20 L76 38 Z" fill="#78350F"/>
+  <!-- Head base -->
+  <ellipse cx="64" cy="54" rx="36" ry="32" fill="#92400E"/>
+  <ellipse cx="64" cy="58" rx="30" ry="26" fill="#FDE68A"/>
+
+  <!-- Eye Patches -->
+  <circle cx="48" cy="52" r="14" fill="#FFFFFF"/>
+  <circle cx="80" cy="52" r="14" fill="#FFFFFF"/>
+  
+  <!-- Eyes -->
+  <circle cx="49" cy="52" r="7" fill="#1E293B"/>
+  <circle cx="79" cy="52" r="7" fill="#1E293B"/>
+  <circle cx="51" cy="50" r="2.5" fill="#FFFFFF"/>
+  <circle cx="81" cy="50" r="2.5" fill="#FFFFFF"/>
+
+  <!-- Round Doctor Glasses -->
+  <circle cx="48" cy="52" r="14" fill="none" stroke="#0D9488" stroke-width="2.5"/>
+  <circle cx="80" cy="52" r="14" fill="none" stroke="#0D9488" stroke-width="2.5"/>
+  <line x1="62" y1="52" x2="66" y2="52" stroke="#0D9488" stroke-width="2.5"/>
+
+  <!-- Beak -->
+  <polygon points="64,58 59,68 69,68" fill="#F59E0B"/>
+  
+  <!-- Medical Head Mirror / Headband -->
+  <path d="M38 34 C46 30 82 30 90 34" fill="none" stroke="#64748B" stroke-width="2.5" stroke-linecap="round"/>
+  <circle cx="64" cy="30" r="6" fill="#E2E8F0" stroke="#64748B" stroke-width="1.5"/>
+  <circle cx="64" cy="30" r="2.5" fill="#38BDF8"/>
+</svg>
+

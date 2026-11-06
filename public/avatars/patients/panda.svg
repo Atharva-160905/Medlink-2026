@@ -1,0 +1,41 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 128 128" width="100%" height="100%">
+  <defs>
+    <linearGradient id="bg-panda" x1="0" y1="0" x2="1" y2="1">
+      <stop offset="0%" stop-color="#DCFCE7"/>
+      <stop offset="100%" stop-color="#BBF7D0"/>
+    </linearGradient>
+  </defs>
+  <!-- Background -->
+  <rect width="128" height="128" rx="28" fill="url(#bg-panda)"/>
+
+  <!-- Body / Warm Green Hoodie -->
+  <path d="M22 128 C22 96 38 88 64 88 C90 88 106 96 106 128 Z" fill="#059669"/>
+  <circle cx="64" cy="110" r="7" fill="#A7F3D0"/>
+
+  <!-- Panda Ears -->
+  <circle cx="36" cy="34" r="14" fill="#0F172A"/>
+  <circle cx="92" cy="34" r="14" fill="#0F172A"/>
+
+  <!-- Panda Head -->
+  <circle cx="64" cy="56" r="34" fill="#FFFFFF" stroke="#E2E8F0" stroke-width="1.5"/>
+
+  <!-- Black Eye Patches -->
+  <ellipse cx="48" cy="52" rx="10" ry="12" transform="rotate(-15 48 52)" fill="#0F172A"/>
+  <ellipse cx="80" cy="52" rx="10" ry="12" transform="rotate(15 80 52)" fill="#0F172A"/>
+
+  <!-- Eyes -->
+  <circle cx="50" cy="51" r="3.5" fill="#FFFFFF"/>
+  <circle cx="50" cy="51" r="2" fill="#0F172A"/>
+  <circle cx="78" cy="51" r="3.5" fill="#FFFFFF"/>
+  <circle cx="78" cy="51" r="2" fill="#0F172A"/>
+
+  <!-- Panda Nose & Mouth -->
+  <ellipse cx="64" cy="64" rx="6" ry="4.5" fill="#0F172A"/>
+  <path d="M64 68.5 L64 73" stroke="#0F172A" stroke-width="2" stroke-linecap="round"/>
+  <path d="M58 73 Q64 78 70 73" fill="none" stroke="#0F172A" stroke-width="2" stroke-linecap="round"/>
+
+  <!-- Cheeks Blush -->
+  <circle cx="36" cy="65" r="5" fill="#FDA4AF" opacity="0.6"/>
+  <circle cx="92" cy="65" r="5" fill="#FDA4AF" opacity="0.6"/>
+</svg>
+

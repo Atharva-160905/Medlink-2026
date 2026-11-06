@@ -5,19 +5,22 @@ import SignupPage from './pages/SignupPage'
 import PatientDashboard from './pages/PatientDashboard'
 import DoctorDashboard from './pages/DoctorDashboard'
 import ProfilePage from './pages/ProfilePage'
+import SmoothScroll from './components/SmoothScroll'
 
 function App() {
   return (
     <Router>
-      <Routes>
-        <Route path="/" element={<LandingPage />} />
-        <Route path="/login" element={<LoginPage />} />
-        <Route path="/signup" element={<SignupPage />} />
-        <Route path="/patient/*" element={<PatientDashboard />} />
-        <Route path="/doctor/*" element={<DoctorDashboard />} />
-        <Route path="/profile" element={<ProfilePage />} />
-        <Route path="/profile/:id" element={<ProfilePage />} />
-      </Routes>
+      <SmoothScroll>
+        <Routes>
+          <Route path="/" element={<LandingPage />} />
+          <Route path="/login" element={<LoginPage />} />
+          <Route path="/signup" element={<SignupPage />} />
+          <Route path="/patient/*" element={<PatientDashboard />} />
+          <Route path="/doctor/*" element={<DoctorDashboard />} />
+          <Route path="/profile" element={<ProfilePage />} />
+          <Route path="/profile/:id" element={<ProfilePage />} />
+        </Routes>
+      </SmoothScroll>
     </Router>
   )
 }

@@ -1,0 +1,39 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 128 128" width="100%" height="100%">
+  <defs>
+    <linearGradient id="bg-bunny" x1="0" y1="0" x2="1" y2="1">
+      <stop offset="0%" stop-color="#FCE7F3"/>
+      <stop offset="100%" stop-color="#FBCFE8"/>
+    </linearGradient>
+  </defs>
+  <!-- Background -->
+  <rect width="128" height="128" rx="28" fill="url(#bg-bunny)"/>
+
+  <!-- Body / Soft Lavender Sweater -->
+  <path d="M22 128 C22 98 38 90 64 90 C90 90 106 98 106 128 Z" fill="#8B5CF6"/>
+  <circle cx="64" cy="112" r="7" fill="#DDD6FE"/>
+
+  <!-- Bunny Ears -->
+  <ellipse cx="48" cy="28" rx="9" ry="24" transform="rotate(-10 48 28)" fill="#FFFFFF" stroke="#E2E8F0" stroke-width="1.5"/>
+  <ellipse cx="48" cy="28" rx="5" ry="18" transform="rotate(-10 48 28)" fill="#F472B6"/>
+  <ellipse cx="80" cy="28" rx="9" ry="24" transform="rotate(10 80 28)" fill="#FFFFFF" stroke="#E2E8F0" stroke-width="1.5"/>
+  <ellipse cx="80" cy="28" rx="5" ry="18" transform="rotate(10 80 28)" fill="#F472B6"/>
+
+  <!-- Bunny Head -->
+  <ellipse cx="64" cy="62" rx="32" ry="28" fill="#FFFFFF" stroke="#E2E8F0" stroke-width="1.5"/>
+
+  <!-- Cheeks Blush -->
+  <circle cx="42" cy="68" r="6" fill="#F472B6" opacity="0.4"/>
+  <circle cx="86" cy="68" r="6" fill="#F472B6" opacity="0.4"/>
+
+  <!-- Eyes -->
+  <ellipse cx="50" cy="56" rx="4" ry="5.5" fill="#1E293B"/>
+  <circle cx="51.5" cy="54" r="1.8" fill="#FFFFFF"/>
+  <ellipse cx="78" cy="56" rx="4" ry="5.5" fill="#1E293B"/>
+  <circle cx="79.5" cy="54" r="1.8" fill="#FFFFFF"/>
+
+  <!-- Cute Bunny Nose & Mouth -->
+  <polygon points="64,65 60,61 68,61" fill="#EC4899"/>
+  <path d="M64 65 L64 70" stroke="#1E293B" stroke-width="2" stroke-linecap="round"/>
+  <path d="M58 70 Q64 74 70 70" fill="none" stroke="#1E293B" stroke-width="2" stroke-linecap="round"/>
+</svg>
+

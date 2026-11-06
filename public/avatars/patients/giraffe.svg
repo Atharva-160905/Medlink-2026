@@ -1,0 +1,60 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 128 128" width="100%" height="100%">
+  <defs>
+    <linearGradient id="bg-giraffe" x1="0" y1="0" x2="1" y2="1">
+      <stop offset="0%" stop-color="#FEF3C7"/>
+      <stop offset="100%" stop-color="#FDE68A"/>
+    </linearGradient>
+    <linearGradient id="giraffe-skin" x1="0" y1="0" x2="0" y2="1">
+      <stop offset="0%" stop-color="#FBBF24"/>
+      <stop offset="100%" stop-color="#F59E0B"/>
+    </linearGradient>
+  </defs>
+  <!-- Background -->
+  <rect width="128" height="128" rx="28" fill="url(#bg-giraffe)"/>
+
+  <!-- Body / Cozy Scarf -->
+  <path d="M22 128 C22 108 38 100 64 100 C90 100 106 108 106 128 Z" fill="#14B8A6"/>
+  <!-- Cozy striped neck scarf -->
+  <path d="M46 96 C46 90 82 90 82 96 L80 106 L48 106 Z" fill="#0D9488"/>
+  <rect x="52" y="96" width="6" height="10" fill="#CCFBF1"/>
+  <rect x="70" y="96" width="6" height="10" fill="#CCFBF1"/>
+
+  <!-- Giraffe Neck -->
+  <path d="M52 56 L50 96 L78 96 L76 56 Z" fill="url(#giraffe-skin)"/>
+  <!-- Neck Spots -->
+  <circle cx="58" cy="74" r="5" fill="#B45309"/>
+  <circle cx="70" cy="85" r="4.5" fill="#B45309"/>
+
+  <!-- Giraffe Horns (Ossicones) -->
+  <rect x="52" y="20" width="4" height="16" rx="2" fill="#D97706"/>
+  <circle cx="54" cy="20" r="5" fill="#78350F"/>
+  <rect x="72" y="20" width="4" height="16" rx="2" fill="#D97706"/>
+  <circle cx="74" cy="20" r="5" fill="#78350F"/>
+
+  <!-- Giraffe Ears -->
+  <ellipse cx="38" cy="38" rx="10" ry="6" transform="rotate(-25 38 38)" fill="#F59E0B"/>
+  <ellipse cx="38" cy="38" rx="6" ry="3.5" transform="rotate(-25 38 38)" fill="#FEF3C7"/>
+  <ellipse cx="90" cy="38" rx="10" ry="6" transform="rotate(25 90 38)" fill="#F59E0B"/>
+  <ellipse cx="90" cy="38" rx="6" ry="3.5" transform="rotate(25 90 38)" fill="#FEF3C7"/>
+
+  <!-- Giraffe Head -->
+  <ellipse cx="64" cy="46" rx="24" ry="26" fill="url(#giraffe-skin)"/>
+  <!-- Head Spots -->
+  <circle cx="52" cy="38" r="4" fill="#B45309"/>
+  <circle cx="74" cy="36" r="3.5" fill="#B45309"/>
+
+  <!-- Eyes -->
+  <circle cx="52" cy="46" r="4" fill="#1E293B"/>
+  <circle cx="53.5" cy="44.5" r="1.5" fill="#FFFFFF"/>
+  <circle cx="76" cy="46" r="4" fill="#1E293B"/>
+  <circle cx="77.5" cy="44.5" r="1.5" fill="#FFFFFF"/>
+
+  <!-- Giraffe Muzzle -->
+  <ellipse cx="64" cy="62" rx="16" ry="12" fill="#FDE68A"/>
+  <ellipse cx="58" cy="60" rx="2.5" ry="3.5" fill="#78350F"/>
+  <ellipse cx="70" cy="60" rx="2.5" ry="3.5" fill="#78350F"/>
+
+  <!-- Smile -->
+  <path d="M59 66 Q64 70 69 66" fill="none" stroke="#78350F" stroke-width="2" stroke-linecap="round"/>
+</svg>
+

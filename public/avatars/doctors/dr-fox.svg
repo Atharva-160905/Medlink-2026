@@ -1,0 +1,52 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 128 128" width="100%" height="100%">
+  <defs>
+    <linearGradient id="bg-fox" x1="0" y1="0" x2="1" y2="1">
+      <stop offset="0%" stop-color="#FEF3C7"/>
+      <stop offset="100%" stop-color="#FDE68A"/>
+    </linearGradient>
+    <linearGradient id="coat-fox" x1="0" y1="0" x2="0" y2="1">
+      <stop offset="0%" stop-color="#FFFFFF"/>
+      <stop offset="100%" stop-color="#F1F5F9"/>
+    </linearGradient>
+  </defs>
+  <!-- Background -->
+  <rect width="128" height="128" rx="28" fill="url(#bg-fox)"/>
+
+  <!-- Lab Coat Body -->
+  <path d="M22 128 C22 96 38 88 64 88 C90 88 106 96 106 128 Z" fill="url(#coat-fox)" stroke="#E2E8F0" stroke-width="1.5"/>
+  <!-- Shirt/Tie -->
+  <path d="M52 88 L64 106 L76 88 Z" fill="#0284C7"/>
+  <polygon points="64,95 67,105 64,115 61,105" fill="#DC2626"/>
+
+  <!-- Stethoscope -->
+  <path d="M42 94 C42 110 52 118 64 118 C76 118 86 110 86 94" fill="none" stroke="#475569" stroke-width="3" stroke-linecap="round"/>
+  <circle cx="64" cy="118" r="4.5" fill="#E2E8F0" stroke="#475569" stroke-width="1.5"/>
+
+  <!-- Fox Ears -->
+  <polygon points="34,48 42,16 62,38" fill="#EA580C"/>
+  <polygon points="38,42 44,24 56,38" fill="#FFFFFF"/>
+  <polygon points="94,48 86,16 66,38" fill="#EA580C"/>
+  <polygon points="90,42 84,24 72,38" fill="#FFFFFF"/>
+
+  <!-- Fox Head -->
+  <circle cx="64" cy="56" r="32" fill="#EA580C"/>
+  <!-- White cheeks -->
+  <path d="M36 58 C36 74 52 82 64 82 C76 82 92 74 92 58 C92 52 82 52 64 62 C46 52 36 52 36 58 Z" fill="#FFFFFF"/>
+
+  <!-- Snout & Nose -->
+  <ellipse cx="64" cy="68" rx="6" ry="4.5" fill="#1E293B"/>
+  <path d="M64 73 Q60 76 56 74" fill="none" stroke="#1E293B" stroke-width="1.5" stroke-linecap="round"/>
+  <path d="M64 73 Q68 76 72 74" fill="none" stroke="#1E293B" stroke-width="1.5" stroke-linecap="round"/>
+
+  <!-- Eyes -->
+  <ellipse cx="48" cy="50" rx="4.5" ry="5.5" fill="#1E293B"/>
+  <circle cx="49.5" cy="48" r="1.8" fill="#FFFFFF"/>
+  <ellipse cx="80" cy="50" rx="4.5" ry="5.5" fill="#1E293B"/>
+  <circle cx="81.5" cy="48" r="1.8" fill="#FFFFFF"/>
+
+  <!-- Modern Doctor Glasses -->
+  <rect x="38" y="44" width="20" height="15" rx="5" fill="none" stroke="#0F172A" stroke-width="2"/>
+  <rect x="70" y="44" width="20" height="15" rx="5" fill="none" stroke="#0F172A" stroke-width="2"/>
+  <line x1="58" y1="51" x2="70" y2="51" stroke="#0F172A" stroke-width="2"/>
+</svg>
+

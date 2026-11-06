@@ -1,0 +1,20 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 48 48" fill="none">
+  <!-- MedLink Clinical Link Icon -->
+  <rect width="48" height="48" rx="14" fill="#0F172A"/>
+  
+  <!-- Subtle inner gradient glow on dark background -->
+  <rect x="1" y="1" width="46" height="46" rx="13" stroke="white" stroke-opacity="0.08" stroke-width="2"/>
+  
+  <!-- Left Link Loop (Patient) -->
+  <path d="M16 18C13.7909 18 12 19.7909 12 22V26C12 28.2091 13.7909 30 16 30H20C22.2091 30 24 28.2091 24 26V25" 
+        stroke="#0D9488" stroke-width="3.5" stroke-linecap="round" stroke-linejoin="round"/>
+        
+  <!-- Right Link Loop (Doctor) with Cross intersection -->
+  <path d="M32 30C34.2091 30 36 28.2091 36 26V22C36 19.7909 34.2091 18 32 18H28C25.7909 18 24 19.7909 24 22V23" 
+        stroke="#0284C7" stroke-width="3.5" stroke-linecap="round" stroke-linejoin="round"/>
+        
+  <!-- Clinical Precision Bridge / Medical Cross Center Mark -->
+  <circle cx="24" cy="24" r="3.5" fill="#38BDF8"/>
+  <circle cx="24" cy="24" r="1.5" fill="#FFFFFF"/>
+</svg>
+
